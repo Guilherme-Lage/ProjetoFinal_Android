@@ -181,7 +181,7 @@ private fun ConteudoDetalhe(
                     Modifier.padding(vertical = 5.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(nomeAtributo(atributo.nome), color = CinzaTexto, modifier = Modifier.width(84.dp))
+                    Text(nomeAtributo(atributo.nome), color = CinzaTexto, modifier = Modifier.width(110.dp))
                     Text(atributo.valor.toString(), fontWeight = FontWeight.Bold, modifier = Modifier.width(36.dp))
                     LinearProgressIndicator(
                         progress = { (atributo.valor / 255f).coerceIn(0f, 1f) },
