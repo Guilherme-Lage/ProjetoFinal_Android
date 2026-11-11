@@ -33,8 +33,8 @@ class RoteiroDoProfessorTest {
 
     private val instrumentation = InstrumentationRegistry.getInstrumentation()
 
-    private val emailA = "ash@pokedex.com"
-    private val emailB = "misty@pokedex.com"
+    private val emailA = "guilherme@grupo07.com"
+    private val emailB = "joaopaulo@grupo07.com"
     private val senha = "pikachu123"
 
     @Test
@@ -42,7 +42,7 @@ class RoteiroDoProfessorTest {
         // 1. Criar uma conta
         regra.onNodeWithText("Cadastre-se").performClick()
         esperarTexto("Criar conta")
-        preencherCadastro("Ash Ketchum", emailA)
+        preencherCadastro("Guilherme Lage", emailA)
         print("cadastro")
         regra.onNodeWithText("Cadastrar").performClick()
 
@@ -77,7 +77,7 @@ class RoteiroDoProfessorTest {
         // 6. Outra conta não enxerga os favoritos da primeira
         regra.onNodeWithText("Cadastre-se").performClick()
         esperarTexto("Criar conta")
-        preencherCadastro("Misty", emailB)
+        preencherCadastro("João Paulo", emailB)
         regra.onNodeWithText("Cadastrar").performClick()
         esperarTexto("Pokedex", 30_000)
         regra.onNodeWithText("Favoritos").performClick()
