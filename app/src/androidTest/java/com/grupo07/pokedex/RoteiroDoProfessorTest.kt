@@ -113,9 +113,13 @@ class RoteiroDoProfessorTest {
 
     private fun preencherCadastro(nome: String, email: String) {
         campos()[0].performTextInput(nome)
+        Thread.sleep(500)
         campos()[1].performTextInput(email)
+        Thread.sleep(500)
         campos()[2].performTextInput(senha)
+        Thread.sleep(500)
         campos()[3].performTextInput(senha)
+        Thread.sleep(500)
         Espresso.closeSoftKeyboard()
     }
 
@@ -130,6 +134,7 @@ class RoteiroDoProfessorTest {
         regra.waitUntil(tempoMs) {
             regra.onAllNodesWithText(texto).fetchSemanticsNodes().isNotEmpty()
         }
+        Thread.sleep(1_200) // pausa para o vídeo da demonstração ficar acompanhável
     }
 
     private fun shell(comando: String) {

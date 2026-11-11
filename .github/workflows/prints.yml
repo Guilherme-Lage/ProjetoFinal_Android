@@ -42,13 +42,7 @@ jobs:
           arch: x86_64
           profile: pixel_6
           disable-animations: true
-          script: |
-            adb install -r app/build/outputs/apk/debug/app-debug.apk
-            adb install -r app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
-            adb shell am instrument -w com.grupo07.pokedex.test/androidx.test.runner.AndroidJUnitRunner | tee instrument.log
-            mkdir -p docs/prints
-            adb pull /sdcard/Android/data/com.grupo07.pokedex/files/prints/. docs/prints/ || true
-            adb shell cmd connectivity airplane-mode disable || true
+          script: bash .github/scripts/rodar-emulador.sh
 
       - name: Guardar log e prints
         if: always()
@@ -58,6 +52,7 @@ jobs:
           path: |
             instrument.log
             docs/prints/
+            docs/demo.mp4
 
       - name: Conferir resultado do teste
         run: |
@@ -68,5 +63,5 @@ jobs:
         run: |
           git config user.name "Guilherme-Lage"
           git config user.email "guilhermelagec762@gmail.com"
-          git add docs/prints/*.png
-          git diff --cached --quiet || (git commit -m "Atualiza prints do README" && git push)
+          git add docs/prints/*.png docs/demo.mp4
+          git diff --cached --quiet || (git commit -m "Atualiza prints e vídeo de demonstração" && git push)
