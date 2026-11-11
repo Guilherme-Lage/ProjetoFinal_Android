@@ -1,0 +1,72 @@
+name: Teste no emulador e prints
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore: [ 'docs/**', 'README.md' ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  emulador:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Compilar app e teste
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug assembleDebugAndroidTest
+
+      - name: Habilitar KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Rodar o roteiro no emulador
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          disable-animations: true
+          script: |
+            adb install -r app/build/outputs/apk/debug/app-debug.apk
+            adb install -r app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+            adb shell am instrument -w com.grupo07.pokedex.test/androidx.test.runner.AndroidJUnitRunner | tee instrument.log
+            mkdir -p docs/prints
+            adb pull /sdcard/Android/data/com.grupo07.pokedex/files/prints/. docs/prints/ || true
+            adb shell cmd connectivity airplane-mode disable || true
+
+      - name: Guardar log e prints
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: resultado-emulador
+          path: |
+            instrument.log
+            docs/prints/
+
+      - name: Conferir resultado do teste
+        run: |
+          cat instrument.log
+          grep -q "^OK (" instrument.log
+
+      - name: Salvar prints no repositório
+        run: |
+          git config user.name "Guilherme-Lage"
+          git config user.email "guilhermelagec762@gmail.com"
+          git add docs/prints/*.png
+          git diff --cached --quiet || (git commit -m "Atualiza prints do README" && git push)
