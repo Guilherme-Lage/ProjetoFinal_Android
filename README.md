@@ -51,6 +51,10 @@ Regra de dependência: nenhuma tela chama Retrofit ou DAO, e nenhum ViewModel im
 
 [Figma do Grupo 07](https://www.figma.com/design/xrY4EwGRB0uWA9MkpwV4LY/Pokedex---Prototipo-Grupo-07?node-id=0-1)
 
+## Apresentação
+
+[Apresentacao-Pokedex-Grupo07.html](apresentacao/Apresentacao-Pokedex-Grupo07.html) — baixe (botão "Download raw file") e abra no navegador. Funciona sem internet; use as setas para passar os slides e F para tela cheia.
+
 ## Demonstração em vídeo
 
 [▶ Assistir à demonstração (1 min)](docs/demo-pokedex.mp4) — o app percorrendo o roteiro de avaliação no emulador: cadastro, senha errada, detalhe, favoritos, outra conta e modo avião.
